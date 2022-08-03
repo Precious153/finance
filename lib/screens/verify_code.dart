@@ -3,6 +3,7 @@ import 'package:finance_banking/screens/verified.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:country_picker/country_picker.dart';
 
 class Verify extends StatefulWidget {
   const Verify({Key? key}) : super(key: key);
@@ -72,10 +73,13 @@ class _VerifyState extends State<Verify> {
             Padding(
               padding: const EdgeInsets.only(left: 41,right: 41),
               child: PinCodeTextField(
+                keyboardType: TextInputType.number,
                 appContext: context,
                 length: 4,
                 animationType: AnimationType.fade,
                 pinTheme: PinTheme(
+                  activeColor: Color(0xff5771F9),
+                  inactiveColor:Color(0xff5771F9),
                   shape: PinCodeFieldShape.box,
                   borderRadius: BorderRadius.circular(5),
                   fieldHeight: 50,

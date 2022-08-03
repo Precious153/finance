@@ -60,7 +60,6 @@ class _SplashScreenState extends State<SplashScreen>
               height:78,
               width:332,
               child:ElevatedButton(
-
                 child: Text('Get Started Now',
                   style : TextStyle(
                     color: Color(0xff5771F9),

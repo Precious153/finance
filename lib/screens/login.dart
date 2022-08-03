@@ -1,15 +1,31 @@
+import 'package:country_currency_pickers/country.dart';
+import 'package:country_currency_pickers/country_pickers.dart';
 import 'package:finance_banking/screens/forgot_password.dart';
+import 'package:finance_banking/screens/invite.dart';
 import 'package:finance_banking/screens/register.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Login extends StatelessWidget {
+import 'mainScreen.dart';
+
+class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
   @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  bool visible = false;
+
+  get onValuePicked => null;
+
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,12 +96,31 @@ class Login extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  Center(
-                    child: Column(
-                      children: [
-                        Text("or"),
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 90),
+                        child: Container(
+                          width: 64,
+                          child: Divider(
+                            height: 2,
+                            thickness: 1,
+                          ),
+                        ),
+                      ),
+                      Text("or"),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 90),
+                        child: Container(
+                          width: 64,
+                          child: Divider(
+                            height: 2,
+                            thickness: 1,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 41,left: 41,top: 20),
@@ -95,9 +130,16 @@ class Login extends StatelessWidget {
                           height: 10,
                         ),
                         TextField(
+                          keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                             hintText: "Email Address",
                             enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(width: 1,
+                                color: Color(0xFF314BCE),
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder:  OutlineInputBorder(
                               borderSide: BorderSide(width: 1,
                                 color: Color(0xFF314BCE),
                               ),
@@ -109,9 +151,30 @@ class Login extends StatelessWidget {
                           height: 10,
                         ),
                         TextField(
+                          obscureText: visible,
                           decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  visible=!visible;
+                                });
+                              },
+                              icon: visible?Icon(
+                                Icons.visibility,
+                                color: Color(0xFF314BCE),
+                              ):Icon(
+                                  Icons.visibility_off,
+                                color: Color(0xFF314BCE),
+                              ),
+                            ),
                             hintText: "Password",
                             enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(width: 1,
+                                color: Color(0xFF314BCE),
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(width: 1,
                                 color: Color(0xFF314BCE),
                               ),
@@ -147,16 +210,22 @@ class Login extends StatelessWidget {
                   ),
 
                   SizedBox(
-                    height: 54,
+                    height: 10,
                   ),
+
+                  CountryPickerDropdown(
+                    initialValue: 'tr',
+                    itemBuilder: _buildDropdownItem,
+                  ),
+
+
                   Column(
                     children: [
                       Center(
                         child: SizedBox(
-                          height:78,
+                          height:51,
                           width:332,
                           child:ElevatedButton(
-
                             child: Text('Log In',
                               style : TextStyle(
                                 color: Colors.white,
@@ -164,6 +233,7 @@ class Login extends StatelessWidget {
                               ),
                             ),
                             onPressed: () {
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Invite()));
                             },
                             style: ElevatedButton.styleFrom(
                               primary: Color(0xFF5771F9),
@@ -175,6 +245,7 @@ class Login extends StatelessWidget {
                       ),
                     ],
                   ),
+
                 ],
               ),
 
@@ -198,7 +269,6 @@ class Login extends StatelessWidget {
                           color: Color(0xFF5771F9),
                         ),),
                     ),),
-                  SizedBox(width: 23,),
                   Icon(
                     Icons.arrow_forward,
                     color: Color(0xFF5771F9),
@@ -211,4 +281,15 @@ class Login extends StatelessWidget {
       ),
     );
   }
+  Widget _buildDropdownItem(Country country) => Container(
+    child: Row(
+      children: <Widget>[
+        CountryPickerUtils.getDefaultFlagImage(country),
+        SizedBox(
+          width: 8.0,
+        ),
+        Text("+${country.phoneCode}(${country.isoCode})"),
+      ],
+    ),
+  );
 }
